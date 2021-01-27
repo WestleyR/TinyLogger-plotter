@@ -35,7 +35,7 @@ Or by cloning the repo, and compiling/installing manually:
 ```
 git clone https://github.com/WestleyR/csv-plotter
 cd csv-plotter/
-go build ./...
+go build ./cmd/csv-plotter
 
 # then copy the binary to your preferred bin dir
 cp -f csv-plotter ~/.local/bin

@@ -22,6 +22,12 @@ import (
 	chart "github.com/wcharczuk/go-chart/v2"
 )
 
+var csvPlotterVersion = "v0.1.0"
+
+func printVersion() {
+	fmt.Printf("%s\n", csvPlotterVersion)
+}
+
 func renderGraph(fp io.Writer, xData []float64, yData []float64, outputType string) error {
 	graph := chart.Chart{
 		XAxis: chart.XAxis{
@@ -50,7 +56,6 @@ func renderGraph(fp io.Writer, xData []float64, yData []float64, outputType stri
 }
 
 func main() {
-
 	helpFlag := flag.BoolP("help", "h", false, "Print this help output.")
 	versionFlag := flag.BoolP("version", "V", false, "print srm version.")
 
@@ -71,7 +76,7 @@ func main() {
 	}
 
 	if *versionFlag {
-		// TODO
+		printVersion()
 		os.Exit(0)
 	}
 
