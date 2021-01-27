@@ -1,6 +1,6 @@
 // Created by WestleyR on 2021-01-26
 // Source code: https://github.com/WestleyR/csv-plotter
-// Last modified data: 2021-01-26
+// Last modified data: 2021-01-27
 //
 // This file is licensed under the terms of
 //
@@ -16,10 +16,8 @@ import (
 	"os"
 	"io"
 	"fmt"
-	"bufio"
-	"strings"
-	"strconv"
 
+	"github.com/WestleyR/csv-plotter/pkg/csvParse"
 	flag "github.com/spf13/pflag"
 	chart "github.com/wcharczuk/go-chart/v2"
 )
@@ -49,54 +47,6 @@ func renderGraph(fp io.Writer, xData []float64, yData []float64, outputType stri
 	}
 
 	return nil
-}
-
-func getXYDataFromFile(fileName string) ([]float64, []float64, error) {
-	var xData []float64
-	var yData []float64
-
-	file, err := os.Open(fileName)
-    if err != nil {
-        return nil, nil, err
-    }
-    defer file.Close()
-
-	// Loop thought the file line-by-line
-	lineCount := 0
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-		// Skip the first line
-		// TODO: figure out if the first column is x or y
-		if lineCount == 0 {
-			lineCount++;
-			continue
-		}
-		lineValue := scanner.Text()
-
-		dataArr := strings.Split(lineValue, ",") 
-		// TODO: make sure theres two slices
-
-		// TODO: for now, y is the first column, and x is the second
-		y, err := strconv.ParseFloat(dataArr[0], 64)
-		if err != nil {
-			return nil, nil, err
-		}
-		x, err := strconv.ParseFloat(dataArr[1], 64)
-		if err != nil {
-			return nil, nil, err
-		}
-
-		xData = append(xData, x)
-		yData = append(yData, y)
-
-		lineCount++;
-    }
-
-    if err := scanner.Err(); err != nil {
-        return nil, nil, err
-    }
-
-	return xData, yData, nil 
 }
 
 func main() {
@@ -138,7 +88,7 @@ func main() {
 	f, _ := os.Create(*outputFileNameFlag)
 	defer f.Close()
 
-	x, y, err := getXYDataFromFile(*inputFileNameFlag)
+	x, y, err := csvParse.GetXYDataFromFile(*inputFileNameFlag)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error getting values from %s: %s\n", *inputFileNameFlag, err)
 		os.Exit(1)
