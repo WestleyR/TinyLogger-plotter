@@ -135,16 +135,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Opening output file: %s...\n", *outputFileNameFlag)
-
 	f, _ := os.Create(*outputFileNameFlag)
 	defer f.Close()
 
 	x, y, err := getXYDataFromFile(*inputFileNameFlag)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error getting values from %s: %s\n", *inputFileNameFlag, err)
+		os.Exit(1)
+	}
 
-	fmt.Printf("ERROR: %v\n", err)
-
-	fmt.Printf("LEN: X=%v Y=%v\n", len(x), len(y))
+	fmt.Printf("plotted %d data points to: %s\n", len(x), *outputFileNameFlag)
 
 	renderGraph(f, x, y, *formatFlag)
 }
