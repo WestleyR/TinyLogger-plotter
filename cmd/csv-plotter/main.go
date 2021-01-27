@@ -40,13 +40,13 @@ func renderGraph(fp io.Writer, xData []float64, yData []float64, outputType stri
 		},
 	}
 
-//	if outputType == "png" {
+	if outputType == "png" {
 		graph.Render(chart.PNG, fp)
-//	} else if outputType == "svg" {
-//		graph.Render(chart.SVG, fp)
-//	} else {
-//		return fmt.Errorf("invalid output type: %s", outputType)
-//	}
+	} else if outputType == "svg" {
+		graph.Render(chart.SVG, fp)
+	} else {
+		return fmt.Errorf("invalid output type: %s", outputType)
+	}
 
 	return nil
 }
@@ -114,7 +114,7 @@ func main() {
 	if *helpFlag {
 		fmt.Printf("Copyright (c) 2021 WestleyR. All rights reserved.\n")
 		fmt.Printf("This software is licensed under the terms of The Clear BSD License.\n")
-		fmt.Printf("Source code: https://github.com/WestleyR/srm\n")
+		fmt.Printf("Source code: https://github.com/WestleyR/csv-plotter\n")
 		fmt.Printf("\n")
 		flag.Usage()
 		os.Exit(0)
