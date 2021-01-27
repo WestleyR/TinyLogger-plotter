@@ -20,11 +20,11 @@ import (
 	"strings"
 	"strconv"
 
-	//chart "github.com/wcharczuk/go-chart/v2"
-	chart "github.com/wcharczuk/go-chart"
+	flag "github.com/spf13/pflag"
+	chart "github.com/wcharczuk/go-chart/v2"
 )
 
-func renderGraph(fp io.Writer, xData []float64, yData []float64) error {
+func renderGraph(fp io.Writer, xData []float64, yData []float64, outputType string) error {
 	graph := chart.Chart{
 		XAxis: chart.XAxis{
 			Name: "Minutes",
@@ -40,8 +40,13 @@ func renderGraph(fp io.Writer, xData []float64, yData []float64) error {
 		},
 	}
 
-	graph.Render(chart.PNG, fp)
-	//graph.Render(chart.SVG, fp)
+//	if outputType == "png" {
+		graph.Render(chart.PNG, fp)
+//	} else if outputType == "svg" {
+//		graph.Render(chart.SVG, fp)
+//	} else {
+//		return fmt.Errorf("invalid output type: %s", outputType)
+//	}
 
 	return nil
 }
@@ -95,14 +100,52 @@ func getXYDataFromFile(fileName string) ([]float64, []float64, error) {
 }
 
 func main() {
-	f, _ := os.Create("output.png")
+
+	helpFlag := flag.BoolP("help", "h", false, "Print this help output.")
+	versionFlag := flag.BoolP("version", "V", false, "print srm version.")
+
+	inputFileNameFlag := flag.StringP("input", "i", "", "input file name")
+	outputFileNameFlag := flag.StringP("output", "o", "", "output file name")
+	formatFlag := flag.StringP("format", "f", "png", "output image format")
+
+	flag.Parse()
+
+	// Help flag
+	if *helpFlag {
+		fmt.Printf("Copyright (c) 2021 WestleyR. All rights reserved.\n")
+		fmt.Printf("This software is licensed under the terms of The Clear BSD License.\n")
+		fmt.Printf("Source code: https://github.com/WestleyR/srm\n")
+		fmt.Printf("\n")
+		flag.Usage()
+		os.Exit(0)
+	}
+
+	if *versionFlag {
+		// TODO
+		os.Exit(0)
+	}
+
+	if *inputFileNameFlag == "" {
+		fmt.Fprintf(os.Stderr, "Need an input file. Use '-i=input.csv'\n")
+		os.Exit(1)
+	}
+
+	if *outputFileNameFlag == "" {
+		fmt.Fprintf(os.Stderr, "Need an output file. Use '-o=output.png'\n")
+		os.Exit(1)
+	}
+
+	fmt.Printf("Opening output file: %s...\n", *outputFileNameFlag)
+
+	f, _ := os.Create(*outputFileNameFlag)
 	defer f.Close()
 
-	x, y, err := getXYDataFromFile("data.csv")
+	x, y, err := getXYDataFromFile(*inputFileNameFlag)
 
 	fmt.Printf("ERROR: %v\n", err)
 
 	fmt.Printf("LEN: X=%v Y=%v\n", len(x), len(y))
 
-	renderGraph(f, x, y)
+	renderGraph(f, x, y, *formatFlag)
 }
+
