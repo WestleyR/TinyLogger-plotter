@@ -27,7 +27,7 @@ Since this software is still in development, the easiest way to install
 `csv-plotter` is by either `go get`:
 
 ```
-go get -u github.com/WestleyR/csv-plotter
+go get -u github.com/WestleyR/csv-plotter/cmd/csv-plotter
 ```
 
 Or by cloning the repo, and compiling/installing manually:
