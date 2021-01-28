@@ -13,9 +13,9 @@
 package main
 
 import (
-	"os"
-	"io"
 	"fmt"
+	"io"
+	"os"
 
 	"github.com/WestleyR/csv-plotter/pkg/csvParse"
 	flag "github.com/spf13/pflag"
@@ -103,4 +103,3 @@ func main() {
 
 	renderGraph(f, x, y, *formatFlag)
 }
-
