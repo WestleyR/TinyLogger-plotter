@@ -14,10 +14,10 @@ package csvParse
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
-	"fmt"
 )
 
 // GetXYDataFromFile will return the X Y data from a csv file path. Returns
@@ -79,7 +79,7 @@ func GetXYDataFromFile(fileName string) ([]float64, []float64, error) {
 			return nil, nil, fmt.Errorf("missing value in: %s at line: %d", fileName, lineCount)
 		}
 
-		// TODO: for now, y is the first column, and x is the second
+		// Convert the string to float
 		y, err := strconv.ParseFloat(dataArr[yColumn], 64)
 		if err != nil {
 			return nil, nil, err
