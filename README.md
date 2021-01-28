@@ -21,6 +21,10 @@ x,y
 
 Where `x` is the time, and `y` is the data, in this case, its voltage.
 
+And here is an example output from [`example-data.csv`](./example-data.csv):
+
+![Alt text](./example-output.png?raw=true "Example output image")
+
 ## Install `csv-plotter`
 
 Since this software is still in development, the easiest way to install
